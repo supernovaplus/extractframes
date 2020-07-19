@@ -7,12 +7,21 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const getDirsAndFiles = (_path, dir = "") => 
-    fs.readdirSync(_path, { withFileTypes: true })
-    .reduce((acc, v) => {
-        acc[v.isDirectory() ? "dirList" : "fileList"].push({dir, name: v.name});
-        return acc;
-    }, {"dirList": [], "fileList": []})
+const getDirsAndFiles = (_path, dir = "") =>{
+    try{
+        return fs.readdirSync(_path, { withFileTypes: true })
+        .reduce((acc, v) => {
+            acc[v.isDirectory() ? "dirList" : "fileList"].push({dir, name: v.name});
+            return acc;
+        }, {"dirList": [], "fileList": []})
+    }catch(err){
+        if(err.errno === -4048){
+            return {"dirList": [], "fileList": []};
+        }else{
+            throw new Error(err);
+        }
+    }
+};
 
 let {dirList, fileList} = getDirsAndFiles(videosPath);
 

@@ -43,7 +43,7 @@ Vue.component('video-list-page', {
         videoPlayer.volume = 0.1;
     },
     template: `<div>
-    <video width="1024" height="720" controls id="videoPlayer"></video>
+    <video width="1024" height="720" controls id="videoPlayer" type="video/mp4"></video>
     <page-change-block @fetchList="fetchList" v-bind:props="{currentFileListPage, nextPage, maxPage, fileCount}"/>
     <h2 v-if="error">Problem: {{error}}</h2>
     <ul id="itemsList">
@@ -94,14 +94,15 @@ Vue.component('navigate-page', {
     </div>`
 });
 
-Vue.component('demo-age', {
+Vue.component('demo-page-one', {
     template: `<div>
-        demo page 2
+    demo-page-one
     </div>`
 });
-Vue.component('demo-agedva', {
+
+Vue.component('demo-page-two', {
     template: `<div>
-        demo page 3
+    demo-page-two
     </div>`
 });
 
@@ -121,8 +122,8 @@ const app = new Vue({
         <navigate-page @selectPage="selectPage" v-bind:props="{contentPage}"/>
         <div>
             <video-list-page v-if="contentPage === 0"/>
-            <demo-age v-if="contentPage === 1"/>
-            <demo-agedva v-if="contentPage === 2"/>
+            <demo-page-one v-if="contentPage === 1"/>
+            <demo-page-two v-if="contentPage === 2"/>
         </div>
     </div>`
 })
