@@ -8,41 +8,19 @@ const { dir } = require("console");
 const app = express();
 const port = 3000;
 
-const getDirsAndFiles = (_path, dir = "") =>{
-    try{
-        return fs.readdirSync(_path, { withFileTypes: true })
-        .reduce((acc, v) => {
-            acc[v.isDirectory() ? "dirList" : "fileList"].push({dir, name: v.name});
-            return acc;
-        }, {"dirList": [], "fileList": []})
-    }catch(err){
-        if(err.errno === -4048){
-            return {"dirList": [], "fileList": []};
+function getAllFiles (_path, _localpath = "/") {
+    const files = [];
+    fs.readdirSync(_path, { withFileTypes: true }).forEach(file=>{
+        if(file.isDirectory()) {
+            files.push(...getAllFiles(path.join(_path, file.name), _localpath + file.name + "/"))
         }else{
-            throw new Error(err);
+            files.push({subfolder: _localpath, name: file.name})
         }
-    }
-};
-
-let {dirList, fileList} = getDirsAndFiles(videosPath);
-
-//get files from folders (level 1 only)
-while(dirList.length > 0){
-    for (let i = 0; i < dirList.length; i++) {
-        const dir = array[i];
-        const newDirsAndFiles = getDirsAndFiles(videosPath + dir.name, dir.name);
-        dirList = dirList.filter(d=>d.name === dir.name);
-        dirList.push(newDirsAndFiles.dirList)
-        fileList.push(newDirsAndFiles.fileList)
-    }
+    })
+    return files;
 }
 
-
-// fileList.push(...dirList.map(dir => getDirsAndFiles(videosPath + dir.name, dir.name).fileList).flat());
-// dirList.length = 0;
-
-//only leave mp4 files
-fileList = fileList.filter(v=>v.name.endsWith("mp4"))
+const fileList = getAllFiles(videosPath).filter(v=>v.name.endsWith("mp4"))
 
 app.use('/videos', express.static(videosPath))
 app.use('/screenshots', express.static(screenshotPath))

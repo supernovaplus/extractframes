@@ -48,8 +48,8 @@ Vue.component('video-list-page', {
     <h2 v-if="error">Problem: {{error}}</h2>
     <ul id="itemsList">
         <li v-for="(file, index) in this.fileList" :key="index">
-            <div>{{file.dir + '/' +file.name}}</div>
-            <div class="img" :style="{ backgroundImage: \`url('screenshots/\${ file.name }.jpg')\`}" v-on:click="playVideo(file.dir+'/'+file.name)"></div>
+            <div>{{file.subfolder + file.name}}</div>
+            <div class="img" :style="{ backgroundImage: \`url('screenshots/\${ file.name }.jpg')\`}" v-on:click="playVideo(file.subfolder + file.name)"></div>
         </li>
     </ul>
     <page-change-block @fetchList="fetchList" v-bind:props="{currentFileListPage, nextPage, maxPage, fileCount}"/>
