@@ -1,7 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body{
-    background: #00b4db; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #00b4db, #0083b0); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #00b4db, #0083b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #00b4db; 
+    background: -webkit-linear-gradient(to right, #00b4db, #0083b0); 
+    background: linear-gradient(to right, #00b4db, #0083b0);
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -11,17 +16,62 @@ body{
     background-position-x: 1440px;
     border-radius: 5px
 }
+
 .img:hover{
     cursor: pointer;
-}
-.img:hover{
     animation: moveX 3s steps(8) infinite;
 }
+
 @keyframes moveX{
     from{background-position-x: 0px;}
     to{background-position-x: 3840px;}
 }
+
 #videoPlayer{
     position: fixed;
     left: 40%;
+    background-color: black;
+}
+
+#links{
+    padding-bottom: 5px;
+}
+
+#links a{
+    padding: 0 5px;
+    color: white;
+    text-decoration: none;
+    background-color: #0083b0;
+}
+
+#links a:hover{
+    background-color: #0099cc;
+}
+
+input[type="button"]{
+    padding: 5px 8px;
+    background-color: #0083b0;
+    border: none;
+    color:white;
+}
+
+input[type="button"]:disabled{
+    color: grey;
+}
+
+input[type="number"]{
+    margin: 5px;
+    padding: 5px 8px;
+}
+
+@media (max-width: 800px) {
+    #links{
+        position: fixed;
+    }
+    #videoPlayer{
+        margin-top:20px;
+        left: 0;
+        width: 100%;
+        height: 250px;
+    }
 }
