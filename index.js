@@ -4,6 +4,7 @@ const spawn = require('child_process').spawn;
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const {videosPath, screenshotPath} = require("./options.json");
 const express = require('express');
+const { dir } = require("console");
 const app = express();
 const port = 3000;
 
@@ -26,9 +27,21 @@ const getDirsAndFiles = (_path, dir = "") =>{
 let {dirList, fileList} = getDirsAndFiles(videosPath);
 
 //get files from folders (level 1 only)
-fileList.push(...dirList.map(dir => getDirsAndFiles(videosPath + dir.name, dir.name).fileList).flat());
-dirList.length = 0;
+while(dirList.length > 0){
+    for (let i = 0; i < dirList.length; i++) {
+        const dir = array[i];
+        const newDirsAndFiles = getDirsAndFiles(videosPath + dir.name, dir.name);
+        dirList = dirList.filter(d=>d.name === dir.name);
+        dirList.push(newDirsAndFiles.dirList)
+        fileList.push(newDirsAndFiles.fileList)
+    }
+}
 
+
+// fileList.push(...dirList.map(dir => getDirsAndFiles(videosPath + dir.name, dir.name).fileList).flat());
+// dirList.length = 0;
+
+//only leave mp4 files
 fileList = fileList.filter(v=>v.name.endsWith("mp4"))
 
 app.use('/videos', express.static(videosPath))
